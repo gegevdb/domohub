@@ -64,6 +64,12 @@ def main():
     try:
         subprocess.run([*pip_cmd, "install", "-r", "requirements.txt"], check=True)
         print("✅ Dépendances installées")
+        
+        # Forcer la réinstallation de bcrypt pour éviter les conflits
+        print("🔧 Correction de bcrypt...")
+        subprocess.run([*pip_cmd, "install", "--force-reinstall", "bcrypt==4.0.1"], check=True)
+        print("✅ bcrypt corrigé")
+        
     except subprocess.CalledProcessError as e:
         print(f"❌ Erreur lors de l'installation: {e}")
         sys.exit(1)

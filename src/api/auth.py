@@ -49,7 +49,7 @@ fake_users_db = {
         "username": "admin",
         "full_name": "Administrator",
         "email": "admin@domohub.local",
-        "hashed_password": pwd_context.hash("admin123"),
+        "hashed_password": pwd_context.hash("admin123")[:72],  # Limiter à 72 caractères
         "disabled": False,
     }
 }
