@@ -91,13 +91,26 @@ class DomoHubApp {
 
     async loadDevices() {
         try {
-            const data = await this.apiCall('/devices');
+            const data = await this.apiCall('/devices/demo');
             this.devices = data;
             this.updateDevicesList();
             this.updateStats();
         } catch (error) {
             console.error('Error loading devices:', error);
             this.showError('Erreur lors du chargement des dispositifs');
+        }
+    }
+
+    async loadSystemStatus() {
+        try {
+            const status = await this.apiCall('/system/demo/status');
+            
+            // Update system info
+            document.getElementById('cpuUsage').textContent = `${status.cpu_percent}%`;
+            document.getElementById('memoryUsage').textContent = `${status.memory_percent}%`;
+            document.getElementById('systemTemp').textContent = `${status.temperature}°C`;
+        } catch (error) {
+            console.error('Error loading system status:', error);
         }
     }
 
@@ -271,19 +284,7 @@ class DomoHubApp {
         document.getElementById('pluginsCount').textContent = '2'; // Hardcoded for demo
     }
 
-    async loadSystemStatus() {
-        try {
-            const status = await this.apiCall('/system/status');
-            
-            document.getElementById('cpuUsage').textContent = `${status.cpu_percent.toFixed(1)}%`;
-            document.getElementById('memoryUsage').textContent = `${status.memory_percent.toFixed(1)}%`;
-            document.getElementById('systemTemp').textContent = `${status.temperature.toFixed(1)}°C`;
-        } catch (error) {
-            console.error('Error loading system status:', error);
-        }
-    }
-
-    async toggleVoice() {
+    toggleVoice() {
         this.isVoiceActive = !this.isVoiceActive;
         const btn = document.getElementById('voiceBtn');
         const text = document.getElementById('voiceText');
@@ -417,7 +418,7 @@ class DomoHubApp {
     }
 }
 
-// Initialize the app when DOM is loaded
+// Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.domohub = new DomoHubApp();
 });

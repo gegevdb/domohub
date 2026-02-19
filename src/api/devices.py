@@ -77,6 +77,13 @@ fake_devices_db = {
 }
 
 
+@router.get("/demo", response_model=List[Device])
+async def get_demo_devices() -> Any:
+    """Récupère la liste des dispositifs (démo sans auth)"""
+    devices = list(fake_devices_db.values())
+    return devices
+
+
 @router.get("/", response_model=List[Device])
 async def get_devices(
     skip: int = 0,

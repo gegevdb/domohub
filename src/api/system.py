@@ -59,6 +59,21 @@ async def get_system_info(current_user: User = Depends(get_current_active_user))
     )
 
 
+@router.get("/demo/status", response_model=SystemStatus)
+async def get_demo_system_status() -> Any:
+    """Récupère le statut système (démo sans auth)"""
+    
+    # Statut simulé pour la démo
+    return SystemStatus(
+        cpu_percent=25.5,
+        memory_percent=45.2,
+        disk_percent=32.8,
+        load_average=[0.5, 0.3, 0.2],
+        temperature=42.5,
+        timestamp=datetime.now()
+    )
+
+
 @router.get("/status", response_model=SystemStatus)
 async def get_system_status(current_user: User = Depends(get_current_active_user)) -> Any:
     """Récupère le statut système en temps réel"""
