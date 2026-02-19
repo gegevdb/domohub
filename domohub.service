@@ -1,0 +1,21 @@
+[Unit]
+Description=DomoHub - Smart Home Automation Server
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/srv/domohub
+Environment=PATH=/srv/domohub/venv/bin
+Environment=PYTHONPATH=/srv/domohub
+ExecStart=/srv/domohub/venv/bin/python -m src.main
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+StandardOutput=append:/srv/domohub/logs/domohub.log
+StandardError=append:/srv/domohub/logs/domohub-error.log
+
+[Install]
+WantedBy=multi-user.target

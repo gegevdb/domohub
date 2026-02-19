@@ -1,0 +1,73 @@
+# Configuration DomoHub
+server:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  ssl_enabled: true
+  ssl_cert_path: "/etc/ssl/certs/domohub.crt"
+  ssl_key_path: "/etc/ssl/private/domohub.key"
+
+database:
+  url: "sqlite:///./domohub.db"
+  echo: false
+  pool_size: 10
+  max_overflow: 20
+
+security:
+  secret_key: "CHANGE_ME_IN_PRODUCTION_USE_RANDOM_32_BYTE_KEY"
+  algorithm: "HS256"
+  access_token_expire_minutes: 30
+  refresh_token_expire_days: 7
+  bcrypt_rounds: 12
+
+mqtt:
+  broker_host: "localhost"
+  broker_port: 1883
+  username: ""
+  password: ""
+  keepalive: 60
+  qos: 1
+
+voice:
+  enabled: true
+  recognition_engine: "google"
+  synthesis_engine: "pyttsx3"
+  language: "fr-FR"
+  wake_word: "domohub"
+  audio_device: "default"
+
+logging:
+  level: "INFO"
+  format: "json"
+  file_path: "./logs/domohub.log"
+  max_size: "10MB"
+  backup_count: 5
+
+monitoring:
+  prometheus_enabled: true
+  prometheus_port: 9090
+  health_check_interval: 30
+
+devices:
+  discovery_enabled: true
+  discovery_interval: 300
+  auto_add_devices: false
+  
+plugins:
+  enabled: true
+  auto_load: true
+  directories:
+    - "./src/plugins"
+    - "./plugins"
+
+notifications:
+  email_enabled: false
+  email_smtp_server: ""
+  email_smtp_port: 587
+  email_username: ""
+  email_password: ""
+  
+performance:
+  max_concurrent_requests: 100
+  request_timeout: 30
+  websocket_ping_interval: 20

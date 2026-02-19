@@ -1,0 +1,36 @@
+# Core Framework (versions compatibles)
+fastapi==0.95.2
+uvicorn[standard]==0.22.0
+pydantic==1.10.12
+pydantic-settings==2.0.2
+
+# Database
+sqlalchemy==2.0.19
+alembic==1.11.1
+aiosqlite==0.18.0
+
+# Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+
+# Async Support
+aiofiles==23.1.0
+
+# Device Communication
+paho-mqtt==1.6.1
+pyserial==3.5
+
+# Web Interface
+jinja2==3.1.2
+python-socketio==5.7.2
+
+# Monitoring & Logging
+structlog==23.1.0
+prometheus-client==0.16.0
+
+# Development
+pytest==7.4.0
+pytest-asyncio==0.21.0
+black==23.3.0
+mypy==1.4.1

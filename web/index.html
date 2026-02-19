@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DomoHub - Système Domotique Intelligent</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .dark-mode {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .dark-mode .bg-white {
+            background-color: #2d3748;
+        }
+        .dark-mode .text-gray-800 {
+            color: #e2e8f0;
+        }
+        .dark-mode .text-gray-600 {
+            color: #cbd5e0;
+        }
+        .dark-mode .border-gray-200 {
+            border-color: #4a5568;
+        }
+        .device-card {
+            transition: all 0.3s ease;
+        }
+        .device-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .status-online {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .voice-wave {
+            animation: wave 1.5s infinite;
+        }
+        @keyframes wave {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-home text-blue-600 text-2xl mr-3"></i>
+                    <h1 class="text-xl font-bold text-gray-800">DomoHub</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="voiceBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-microphone mr-2"></i>
+                        <span id="voiceText">Activer le vocal</span>
+                    </button>
+                    <button id="themeToggle" class="text-gray-600 hover:text-gray-800 transition">
+                        <i class="fas fa-moon text-xl"></i>
+                    </button>
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 bg-green-500 rounded-full status-online mr-2"></div>
+                        <span class="text-sm text-gray-600">En ligne</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Stats Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-100 rounded-lg">
+                        <i class="fas fa-lightbulb text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Lumières</p>
+                        <p class="text-2xl font-bold text-gray-800" id="lightsCount">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-100 rounded-lg">
+                        <i class="fas fa-thermometer-half text-green-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Capteurs</p>
+                        <p class="text-2xl font-bold text-gray-800" id="sensorsCount">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-purple-100 rounded-lg">
+                        <i class="fas fa-plug text-purple-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Plugins</p>
+                        <p class="text-2xl font-bold text-gray-800" id="pluginsCount">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-orange-100 rounded-lg">
+                        <i class="fas fa-microphone-alt text-orange-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Vocal</p>
+                        <p class="text-2xl font-bold text-gray-800" id="voiceStatus">Inactif</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Device Controls -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Devices List -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">Dispositifs</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4 flex justify-between items-center">
+                            <div class="flex space-x-2">
+                                <button class="filter-btn px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-sm" data-filter="all">
+                                    Tous
+                                </button>
+                                <button class="filter-btn px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm" data-filter="light">
+                                    Lumières
+                                </button>
+                                <button class="filter-btn px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm" data-filter="sensor">
+                                    Capteurs
+                                </button>
+                            </div>
+                            <button id="refreshBtn" class="text-gray-600 hover:text-gray-800">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="devicesList" class="space-y-4">
+                            <!-- Devices will be loaded here -->
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fas fa-spinner fa-spin text-4xl mb-4"></i>
+                                <p>Chargement des dispositifs...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions & Voice Commands -->
+            <div class="space-y-6">
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">Actions Rapides</h2>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <button class="w-full bg-red-500 text-white px-4 py-3 rounded-lg hover:bg-red-600 transition flex items-center justify-center">
+                            <i class="fas fa-power-off mr-2"></i>
+                            Tout éteindre
+                        </button>
+                        <button class="w-full bg-green-500 text-white px-4 py-3 rounded-lg hover:bg-green-600 transition flex items-center justify-center">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            Allumer les lumières
+                        </button>
+                        <button class="w-full bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-moon mr-2"></i>
+                            Mode nuit
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Voice Commands -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">Commandes Vocales</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-center mb-4">
+                            <div id="voiceIndicator" class="w-20 h-20 mx-auto bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-microphone text-gray-500 text-2xl"></i>
+                            </div>
+                            <p class="text-sm text-gray-600" id="voiceHint">Cliquez pour activer</p>
+                        </div>
+                        
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                "Allume la lumière du salon"
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                "Éteins toutes les lumières"
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                "Mets la température à 21 degrés"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Info -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">Système</h2>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">CPU</span>
+                            <span class="text-sm font-medium" id="cpuUsage">0%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Mémoire</span>
+                            <span class="text-sm font-medium" id="memoryUsage">0%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Température</span>
+                            <span class="text-sm font-medium" id="systemTemp">0°C</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex justify-between items-center">
+                <p class="text-sm text-gray-600">DomoHub v1.0.0 - Système Domotique Intelligent</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-gray-600">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-book"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
