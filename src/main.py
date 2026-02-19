@@ -12,6 +12,8 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from .api import api_router
 from .core.config import settings
@@ -80,9 +82,18 @@ app.add_middleware(
 # Inclusion des routes API
 app.include_router(api_router, prefix="/api/v1")
 
+# Servir les fichiers statiques
+app.mount("/static", StaticFiles(directory="web"), name="static")
+
 
 @app.get("/")
 async def root():
+    """Page d'accueil - sert le frontend"""
+    return FileResponse("web/index.html")
+
+
+@app.get("/api")
+async def api_info():
     """Endpoint racine pour vérifier que l'API fonctionne"""
     return {
         "message": "DomoHub API",

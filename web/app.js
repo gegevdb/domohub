@@ -4,12 +4,15 @@
 
 class DomoHubApp {
     constructor() {
-        this.apiBase = '/api/v1';
         this.token = localStorage.getItem('domohub_token');
         this.devices = [];
         this.currentFilter = 'all';
         this.isDarkMode = false;
         this.isVoiceActive = false;
+        
+        // Détecter automatiquement le port
+        this.apiPort = window.location.port || '8080';
+        this.apiBase = `${window.location.protocol}//${window.location.hostname}:${this.apiPort}/api/v1`;
         
         this.init();
     }

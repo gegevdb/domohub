@@ -12,7 +12,7 @@ from pydantic_settings import BaseSettings
 
 class ServerConfig(BaseSettings):
     host: str = "0.0.0.0"
-    port: int = 8000
+    port: int = 8080
     debug: bool = False
     ssl_enabled: bool = True
     ssl_cert_path: Optional[str] = None
