@@ -41,6 +41,7 @@ def main():
     if not os.path.exists("venv"):
         print("📦 Création de l'environnement virtuel...")
         subprocess.run([sys.executable, "-m", "venv", "venv"], check=True)
+        print("✅ Environnement virtuel créé")
     
     # Déterminer les commandes selon l'OS
     if sys.platform == "win32":
@@ -50,9 +51,22 @@ def main():
         pip_cmd = ["./venv/bin/pip"]
         python_cmd = ["./venv/bin/python"]
     
+    # Vérifier que pip existe
+    if not os.path.exists(pip_cmd[0]):
+        print(f"❌ {pip_cmd[0]} non trouvé. Réinstallation du venv...")
+        import shutil
+        shutil.rmtree("venv", ignore_errors=True)
+        subprocess.run([sys.executable, "-m", "venv", "venv"], check=True)
+        print("✅ Environnement virtuel réinstallé")
+    
     # Installer les dépendances
     print("📦 Installation des dépendances...")
-    subprocess.run([*pip_cmd, "install", "-r", "requirements.txt"], check=True)
+    try:
+        subprocess.run([*pip_cmd, "install", "-r", "requirements.txt"], check=True)
+        print("✅ Dépendances installées")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Erreur lors de l'installation: {e}")
+        sys.exit(1)
     
     # Trouver un port disponible
     port = find_available_port(8080)
