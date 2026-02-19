@@ -1,2 +1,0 @@
-# domohub
-Hub domotique performant
