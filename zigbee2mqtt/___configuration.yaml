@@ -1,0 +1,17 @@
+homeassistant: false
+permit_join: false
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://mosquitto:1883
+  user: gegevdb
+  password: 3yn4coYd
+serial:
+  port: /dev/ttyUSB0
+advanced:
+  log_level: info
+  pan_id: 6754
+  channel: 11
+  network_key: GENERATE
+frontend:
+  port: 8080
+  auth_token: your-secret-token
