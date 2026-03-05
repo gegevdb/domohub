@@ -1,0 +1,22 @@
+{
+    "name": "domoglass/pro",
+    "description": "DomoGlass Pro - Smart Home OS",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "php-mqtt/client": "^1.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "DomoGlass\\": "src/"
+        },
+        "files": [
+            "config.php",
+            "includes/db.php"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
