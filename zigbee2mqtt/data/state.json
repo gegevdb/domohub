@@ -1,0 +1,15 @@
+{
+    "0xa4c1387872e29663": {
+        "voltage": 2500,
+        "battery": 87,
+        "temperature": 22.9,
+        "humidity": 53.82,
+        "linkquality": 200
+    },
+    "0xa4c13820952bee21": {
+        "voltage": 3000,
+        "battery": 100,
+        "temperature": 23.23,
+        "humidity": 50.76
+    }
+}

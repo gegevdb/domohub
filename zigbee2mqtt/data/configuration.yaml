@@ -1,0 +1,51 @@
+version: 5
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://localhost:1883
+  user: gegevdb
+  password: 3yn4coYd
+serial:
+  port: /dev/ttyUSB0
+  adapter: ember
+  baudrate: 115200
+  rtscts: false
+advanced:
+  log_level: info
+  channel: 11
+  network_key:
+    - 85
+    - 76
+    - 150
+    - 241
+    - 112
+    - 48
+    - 23
+    - 57
+    - 106
+    - 221
+    - 180
+    - 231
+    - 23
+    - 159
+    - 36
+    - 94
+  pan_id: 39507
+  ext_pan_id:
+    - 143
+    - 65
+    - 254
+    - 60
+    - 247
+    - 177
+    - 108
+    - 202
+frontend:
+  enabled: true
+  port: 8080
+homeassistant:
+  enabled: false
+devices:
+  '0xa4c1387872e29663':
+    friendly_name: '0xa4c1387872e29663'
+  '0xa4c13820952bee21':
+    friendly_name: '0xa4c13820952bee21'
